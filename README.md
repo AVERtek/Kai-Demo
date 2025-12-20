@@ -1,1 +1,4 @@
-# Kai-Demo
+# Kai Demo
+
+Storytelling demonstration in AR.
+
