@@ -238,12 +238,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      <button slot="ar-button" style="z-index: 9; background-color: #017CB3; border-radius: 8px; border: 1 px solid white; position: absolute; top: 2px; right: 0; height: 40px; width: auto; ">
                    👆 <b style="color:#FFFFFF;"><strong>AUGMENTED REALITY!</strong></b></button> -->  
 
-   <model-viewer id="model-viewer" src="Models/human_kai_40.glb?sound=Sound/Kai Story human_v2.mp3" shadow-intensity="1" ar ar-modes="scene-viewer webxr quick-look" ar-preferred ar-placement="floor" camera-controls autoplay 
+   <!-- <model-viewer id="model-viewer" src="Models/human_kai_40.glb?sound=Sound/Kai Story human_v2.mp3" shadow-intensity="1" ar ar-modes="scene-viewer webxr quick-look" ar-preferred ar-placement="floor" camera-controls autoplay 
     camera-orbit="0deg 75deg 100%" id="reveal" loading="eager" alt="Construction Demo" style="width: 100%; height: 600px; autoplay exposure="1" ios-src="Models/Human_kai_40.usdz" interaction-prompt="none">
                     
      <button slot="ar-button" style="z-index: 9; background-color: #017CB3; border-radius: 8px; border: 1 px solid white; position: absolute; top: 2px; right: 0; height: 40px; width: auto; ">
-                   👆 <b style="color:#FFFFFF;"><strong>AUGMENTED REALITY!</strong></b></button> 
-      
+                   👆 <b style="color:#FFFFFF;"><strong>AUGMENTED REALITY!</strong></b></button> -->
+
+ <div class="card"> 
+  <model-viewer 
+    id="model-viewer" 
+    src="Models/Hkai_2.glb" 
+    ios-src="Models/Human_kai_40.usdz"
+    ar 
+    ar-modes="webxr scene-viewer quick-look" 
+    ar-preferred 
+    ar-placement="floor" 
+    camera-controls 
+    autoplay 
+    shadow-intensity="1"
+    camera-orbit="0deg 75deg 100%" 
+    loading="eager" 
+    alt="Kai Demo" 
+    style="width: 100%; height: 600px;">
+                    
+    <button slot="ar-button" style="z-index: 9; background-color: #017CB3; border-radius: 8px; border: 1px solid white; position: absolute; top: 2px; right: 0; height: 40px; width: auto; cursor: pointer;">
+      👆 <b style="color:#FFFFFF;"><strong>AUGMENTED REALITY!</strong></b>
+    </button> 
+    
+  </model-viewer> <div class="card1">
+     </div>
+</div>
+ 
  <div class="card1">
   <!--<div class="card1">
    <model-viewer id="model-viewer" loading="eager" src="Models/scout_final_24.glb?sound=Sound/SCOUT HIGH RES_24_1.mp3" camera-controls interaction-prompt="none" disable-zoom 
