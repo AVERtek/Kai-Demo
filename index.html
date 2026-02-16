@@ -34,7 +34,7 @@
 
         #overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 20;
+            background: rgba(0,0,0,0.8); z-index: 20;
             display: flex; justify-content: center; align-items: center; cursor: pointer; border-radius: 4px;
         }
         #overlay.hide { display: none; }
@@ -42,7 +42,7 @@
 
         model-viewer { width: 100%; height: 600px; --progress-bar-color: #017CB3; }
         .marginauto { margin: 10px auto; display: block; }
-        a { color: #017CB3; text-decoration: none; font-weight: bold; }
+        a { color: #017CB3; text-decoration: none; }
     </style>
 </head>
 
@@ -80,7 +80,7 @@
             </audio>
         </div>
 
-        <div class="card" style="text-align: center; color:#ffdf00; line-height: 1.8;">
+        <div class="card" style="text-align: center; color:#ffdf00;">
             <h1 style="color:#FFFFFF;"><em>Answers to Critical Questions:</em></h1>
             <p>
                 <b>DISCOVER:</b> <a href="#" onclick="getOutboundLink('https://vimeo.com/899988851/5cb3fc9712');">STORY & BRAND AWARENESS</a><br>
@@ -112,51 +112,35 @@
             modelViewer.play();
         }
 
-        // --- AR LAUNCHER WITH READY-CHECK TO PREVENT BLACK SCREEN ---
+        // --- FIXED AR LAUNCH WITH DESKTOP WARNING ---
         arLauncher.addEventListener('click', (e) => {
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             
             if (!isMobile) {
-                alert("The Augmented Reality experience requires a mobile device. Please visit this page on your phone!");
+                alert("Please open this page on a mobile device to experience Kai in Augmented Reality!");
                 return;
             }
 
-            // Prepare Audio for AR
             audio.pause();
             audioSource.src = arAudio;
             audio.load();
 
-            // Prime audio to bypass auto-play blocks
+            // Prime audio for AR
             audio.play().then(() => {
                 audio.pause();
                 audio.currentTime = 0;
-            }).catch(e => console.log("Audio prime blocked"));
+            }).catch(e => console.log("Prime blocked"));
 
-            // Change Source to High Quality AR Model
             modelViewer.src = "Models/Hkai_final.glb"; 
-            modelViewer.autoplay = true;
-
-            // THE FIX: Wait for model to be fully ready before launching AR
-            const launchARWhenReady = () => {
-                modelViewer.activateAR();
-                modelViewer.removeEventListener('poster-dismissed', launchARWhenReady);
-            };
-
-            modelViewer.addEventListener('poster-dismissed', launchARWhenReady);
-
-            // Fallback for slower connections (max 2.5 seconds)
-            setTimeout(() => {
-                if (modelViewer.src.includes("Hkai_final.glb")) {
-                    modelViewer.activateAR();
-                }
-            }, 2500);
+            // Note: activateAR is called automatically by the slot="ar-button" 
+            // but we ensure the source is swapped first.
         });
 
         // --- AR STATUS HANDLER ---
         modelViewer.addEventListener('ar-status', (event) => {
             if (event.detail.status === 'object-placed') {
                 audio.play();
-                modelViewer.play(); // Force movement once placed
+                modelViewer.play();
             }
 
             if (event.detail.status === 'not-presenting') {
@@ -173,9 +157,10 @@
             }
         });
 
-        // --- SYNC & CONTROL ---
+        // --- ENHANCED SYNC LOGIC ---
+        // Ensures Kai's animation frame matches the audio timestamp
         audio.addEventListener("timeupdate", () => {
-            if (!isNaN(audio.currentTime) && !modelViewer.paused) {
+            if (!isNaN(audio.currentTime) && modelViewer.playing) {
                 modelViewer.currentTime = audio.currentTime;
             }
         });
