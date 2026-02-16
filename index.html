@@ -34,7 +34,7 @@
 
         #overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 20;
+            background: rgba(0,0,0,0.85); z-index: 20;
             display: flex; justify-content: center; align-items: center; cursor: pointer; border-radius: 4px;
         }
         #overlay.hide { display: none; }
@@ -42,7 +42,7 @@
 
         model-viewer { width: 100%; height: 600px; --progress-bar-color: #017CB3; }
         .marginauto { margin: 10px auto; display: block; }
-        a { color: #017CB3; text-decoration: none; }
+        a { color: #017CB3; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 
@@ -60,7 +60,7 @@
             </div>
 
             <model-viewer id="model-viewer" 
-                src="Models/HKAI_TALKING_TEST.glb" 
+                src="Models/HKAI_DANCING_TEST.glb" 
                 ios-src="Models/Human_kai_40.usdz#allowsScaling=1"
                 ar ar-modes="webxr scene-viewer quick-look" 
                 ar-placement="floor" camera-controls 
@@ -80,7 +80,12 @@
             </audio>
         </div>
 
-        <div class="card" style="text-align: center; color:#ffdf00;">
+        <div class="card">
+            <h2 style="text-align: center; color:#FFFFFF;"><em>4D Augmented Reality is...</em></h2> 
+            <h1 style="text-align: center; color:#ffdf00;">THEATER BEYOND THE MIND</h1> 
+        </div>
+
+        <div class="card" style="text-align: center; color:#ffdf00; line-height: 1.8;">
             <h1 style="color:#FFFFFF;"><em>Answers to Critical Questions:</em></h1>
             <p>
                 <b>DISCOVER:</b> <a href="#" onclick="getOutboundLink('https://vimeo.com/899988851/5cb3fc9712');">STORY & BRAND AWARENESS</a><br>
@@ -93,6 +98,7 @@
 
         <div class="card">
             <img alt="AR Instructions" src="images/AR Instructions wht-trans3.png" class="marginauto" style="max-width: 100%; max-height: 350px">
+            <h4 style="text-align: center; color:#FFFFFF;"><em>if AR button does not appear on mobile device, use another browser</em></h4>
         </div>
     </div>
 
@@ -112,35 +118,42 @@
             modelViewer.play();
         }
 
-        // --- FIXED AR LAUNCH WITH DESKTOP WARNING ---
+        // --- AR LAUNCH LOGIC WITH NON-MOBILE WARNING ---
         arLauncher.addEventListener('click', (e) => {
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             
             if (!isMobile) {
-                alert("Please open this page on a mobile device to experience Kai in Augmented Reality!");
+                // Feature Fixed: Alert user on desktop
+                alert("The Augmented Reality experience requires a mobile device. Please visit this page on your phone to launch Kai into your room!");
                 return;
             }
 
+            // Prep for AR
             audio.pause();
             audioSource.src = arAudio;
             audio.load();
 
-            // Prime audio for AR
+            // Prime audio
             audio.play().then(() => {
                 audio.pause();
                 audio.currentTime = 0;
-            }).catch(e => console.log("Prime blocked"));
+            }).catch(e => console.log("Audio prime blocked"));
 
+            // IMPORTANT: Swap model and ensure it's in a 'playing' state for AR handoff
             modelViewer.src = "Models/Hkai_final.glb"; 
-            // Note: activateAR is called automatically by the slot="ar-button" 
-            // but we ensure the source is swapped first.
+            modelViewer.autoplay = true;
+
+            // Small delay to ensure the new model source is registered before launch
+            setTimeout(() => {
+                modelViewer.activateAR();
+            }, 50);
         });
 
         // --- AR STATUS HANDLER ---
         modelViewer.addEventListener('ar-status', (event) => {
             if (event.detail.status === 'object-placed') {
                 audio.play();
-                modelViewer.play();
+                modelViewer.play(); // Ensures Kai starts dancing when placed
             }
 
             if (event.detail.status === 'not-presenting') {
@@ -157,10 +170,10 @@
             }
         });
 
-        // --- ENHANCED SYNC LOGIC ---
-        // Ensures Kai's animation frame matches the audio timestamp
+        // --- SYNC & CONTROL LOGIC ---
         audio.addEventListener("timeupdate", () => {
-            if (!isNaN(audio.currentTime) && modelViewer.playing) {
+            // Only sync if the model is currently active/playing
+            if (!isNaN(audio.currentTime) && !modelViewer.paused) {
                 modelViewer.currentTime = audio.currentTime;
             }
         });
