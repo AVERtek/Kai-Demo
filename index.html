@@ -16,14 +16,12 @@
     </script>
 
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
-    <script src="https://unpkg.com/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
     <style>
         body { background-color: #26282A; margin: 0; padding: 15px; font-family: arial, sans-serif; }
-        .container { column-count: 1; max-width: 800px; margin: 0 auto; }
+        .container { max-width: 800px; margin: 0 auto; }
         
-        .card { break-inside: avoid; background-color: rgb(40, 38, 42); border: 2px solid rgb(40, 38, 42); padding: 10px; margin-bottom: 1em; position: relative; }
-        .card1 { break-inside: avoid; background-color: #26282A; border: 2px solid rgb(40, 38, 42); padding: 5px; margin-bottom: 1em; }
+        .card { background-color: rgb(40, 38, 42); border: 2px solid rgb(40, 38, 42); padding: 10px; margin-bottom: 1em; position: relative; border-radius: 4px; }
 
         /* HIDE NATIVE AR BUTTONS */
         model-viewer::part(default-ar-button) { display: none !important; }
@@ -36,7 +34,7 @@
 
         #overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 20;
+            background: rgba(0,0,0,0.8); z-index: 20;
             display: flex; justify-content: center; align-items: center; cursor: pointer; border-radius: 4px;
         }
         #overlay.hide { display: none; }
@@ -45,26 +43,18 @@
         model-viewer { width: 100%; height: 600px; --progress-bar-color: #017CB3; }
         .marginauto { margin: 10px auto; display: block; }
         a { color: #017CB3; text-decoration: none; }
-
-        @font-face {
-            font-family: 'Factoria Bold';
-            src: url('fonts/Factoria-Bold.woff2') format('woff2');
-            font-weight: bold;
-        }
     </style>
 </head>
 
 <body>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-0000000" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
     <div class="container">
         <div class="card">
             <img class="marginauto" src="images/AVERtek-Logo-final-white.png" alt="Logo" style="width: 300px; height: auto"> 
-            <h1 style="text-align: center; color:#FFFFFF;">BRAND. STORYTELLING. REALITY.</h1> 
-            <h2 style="text-align: center; color:#017CB3;">IMAGINATION CONCEIVED!</h2>
+            <h1 style="text-align: center; color:#FFFFFF; font-size: 24px;">BRAND. STORYTELLING. REALITY.</h1> 
+            <h2 style="text-align: center; color:#017CB3; font-size: 20px;">IMAGINATION CONCEIVED!</h2>
         </div>
 
-        <div class="card" style="padding:0;">
+        <div class="card" style="padding:0; overflow: hidden;">
             <div id="overlay" onclick="startExperience()">
                 <div class="play-trigger">CLICK TO START EXPERIENCE</div>
             </div>
@@ -74,6 +64,7 @@
                 ios-src="Models/Human_kai_40.usdz#allowsScaling=1"
                 ar ar-modes="webxr scene-viewer quick-look" 
                 ar-placement="floor" camera-controls 
+                autoplay animation-name="*"
                 interaction-prompt="none" loading="eager">
                 
                 <button slot="ar-button" class="ar-button" id="ar-launcher">
@@ -89,32 +80,19 @@
             </audio>
         </div>
 
-        <div class="card">
-            <h2 style="text-align: center; color:#FFFFFF;"><em>4D Augmented Reality is...</em></h2> 
-            <h1 style="text-align: center; color:#ffdf00;">THEATER BEYOND THE MIND</h1> 
-        </div>
-
-        <div class="card">
-            <h1 style="text-align: center; color:#FFFFFF;"><em>Answers to Critical Decision-Making Questions:</em></h1>
-            <p style="text-align: center; color:#ffdf00;">
+        <div class="card" style="text-align: center; color:#ffdf00;">
+            <h1 style="color:#FFFFFF;"><em>Answers to Critical Questions:</em></h1>
+            <p>
                 <b>DISCOVER:</b> <a href="#" onclick="getOutboundLink('https://vimeo.com/899988851/5cb3fc9712');">STORY & BRAND AWARENESS</a><br>
                 <b>ENGAGE:</b> <a href="#" onclick="getOutboundLink('https://avertek.net/ar-examples');">UNIQUE SELLING PROPOSTIONS</a><br>
                 <b>EXPLORE:</b> <a href="#" onclick="getOutboundLink('https://avertek.net/');">FEATURES, ADVANTAGES, BENEFITS</a><br>
                 <b>REALIZE:</b> <a href="#" onclick="getOutboundLink('https://avertek.net/xr-now');">VALUE</a><br>
                 <b>CONTINUE:</b> <a href="#" onclick="getOutboundLink('https://avertek.net/contact-us');">THE STORY</a>
             </p>
-            <h1 style="text-align: center; color:#FFFFFF; margin-top:20px;"><em>Proven Results, Amplifies Every Marketing Campaign!</em></h1>
-        </div>
-
-        <div class="card">
-            <h2 style="text-align: center;">
-                <a href="#" onclick="getOutboundLink('https://avertek.net/contact-us');">REIMAGINE YOUR BRAND'S STORY IN 4D/AR</a>
-            </h2>
         </div>
 
         <div class="card">
             <img alt="AR Instructions" src="images/AR Instructions wht-trans3.png" class="marginauto" style="max-width: 100%; max-height: 350px">
-            <h4 style="text-align: center; color:#FFFFFF;"><em>if AR button does not appear on mobile device, use another browser</em></h4>
         </div>
     </div>
 
@@ -125,9 +103,8 @@
         const overlay = document.querySelector("#overlay");
         const arLauncher = document.querySelector("#ar-launcher");
 
-        // Audio Assets
-        const webAudio = "Sound/Kai Story human_v2.mp3"; // Original
-        const arAudio = "Sound/K18 Edit 57sec_3.mp3";   // Updated AR Version (Swap as needed)
+        const webAudio = "Sound/Kai Story human_v2.mp3"; 
+        const arAudio = "Sound/K18 Edit 57sec_3.mp3";   
 
         function startExperience() {
             overlay.classList.add("hide");
@@ -135,22 +112,28 @@
             modelViewer.play();
         }
 
-        // --- AR LAUNCH LOGIC ---
-        arLauncher.addEventListener('click', () => {
-            // Swap to AR-length audio
+        // --- FIXED AR LAUNCH WITH DESKTOP WARNING ---
+        arLauncher.addEventListener('click', (e) => {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
+            if (!isMobile) {
+                alert("Please open this page on a mobile device to experience Kai in Augmented Reality!");
+                return;
+            }
+
             audio.pause();
             audioSource.src = arAudio;
             audio.load();
 
-            // Prime audio
+            // Prime audio for AR
             audio.play().then(() => {
                 audio.pause();
                 audio.currentTime = 0;
             }).catch(e => console.log("Prime blocked"));
 
-            // Switch to AR Model
             modelViewer.src = "Models/Hkai_final.glb"; 
-            modelViewer.activateAR();
+            // Note: activateAR is called automatically by the slot="ar-button" 
+            // but we ensure the source is swapped first.
         });
 
         // --- AR STATUS HANDLER ---
@@ -161,10 +144,10 @@
             }
 
             if (event.detail.status === 'not-presenting') {
-                // Revert to Web Audio
                 audio.pause();
                 audioSource.src = webAudio;
                 audio.load();
+                
                 if(!overlay.classList.contains("hide")) return;
                 
                 setTimeout(() => {
@@ -174,9 +157,10 @@
             }
         });
 
-        // --- SYNC LOGIC ---
+        // --- ENHANCED SYNC LOGIC ---
+        // Ensures Kai's animation frame matches the audio timestamp
         audio.addEventListener("timeupdate", () => {
-            if (!isNaN(audio.currentTime) && !modelViewer.paused) {
+            if (!isNaN(audio.currentTime) && modelViewer.playing) {
                 modelViewer.currentTime = audio.currentTime;
             }
         });
@@ -184,7 +168,6 @@
         audio.addEventListener("play", () => modelViewer.play());
         audio.addEventListener("pause", () => modelViewer.pause());
 
-        // Tracking helper
         var getOutboundLink = function(url) {
             gtag('event', 'click', {
                 'event_category': 'outbound',
