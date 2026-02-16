@@ -10,171 +10,123 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=0-0000000000"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', '0-0000000000');
     </script>
 
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
     <style>
-        body { background-color: #26282A; margin: 0; padding: 15px; font-family: arial, sans-serif; }
-        .container { max-width: 800px; margin: 0 auto; }
-        
-        .card { background-color: rgb(40, 38, 42); border: 2px solid rgb(40, 38, 42); padding: 10px; margin-bottom: 1em; position: relative; border-radius: 4px; }
-
-        /* HIDE NATIVE AR BUTTONS */
-        model-viewer::part(default-ar-button) { display: none !important; }
-
-        .ar-button { 
-            background-color: #017CB3; border-radius: 8px; border: 1px solid white; 
-            position: absolute; top: 10px; right: 10px; height: 40px; 
-            color: white; padding: 0 15px; cursor: pointer; z-index: 15; font-weight: bold;
-        }
-
-        #overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 20;
-            display: flex; justify-content: center; align-items: center; cursor: pointer; border-radius: 4px;
-        }
-        #overlay.hide { display: none; }
-        .play-trigger { background: #017CB3; color: white; border: 1px solid white; padding: 15px 30px; border-radius: 8px; font-weight: bold; }
-
-        model-viewer { width: 100%; height: 600px; --progress-bar-color: #017CB3; }
+        body { background-color: #26282A; margin: 0; padding: 0; }
+        .container { column-count: 1; column-width: 500px; column-gap: 10px; padding: 20px; }
+        .card { break-inside: avoid; background-color: rgb(40, 38, 42); border: 2px solid rgb(40, 38, 42); padding: 10px; margin-bottom: 1em; }
+        .card1 { background-color: #26282A; padding: 5px; margin-top: 10px; }
         .marginauto { margin: 10px auto; display: block; }
+        model-viewer { width: 100%; height: 600px; --progress-bar-color: #017CB3; }
+        .ar-button {
+            z-index: 9; 
+            background-color: #017CB3; 
+            border-radius: 8px; 
+            border: 1px solid white; 
+            position: absolute; 
+            top: 10px; 
+            right: 10px; 
+            height: 40px; 
+            padding: 0 15px;
+            cursor: pointer;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
         a { color: #017CB3; text-decoration: none; }
     </style>
 </head>
 
 <body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-0000000" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
     <div class="container">
         <div class="card">
-            <img class="marginauto" src="images/AVERtek-Logo-final-white.png" alt="Logo" style="width: 300px; height: auto"> 
-            <h1 style="text-align: center; color:#FFFFFF; font-size: 24px;">BRAND. STORYTELLING. REALITY.</h1> 
-            <h2 style="text-align: center; color:#017CB3; font-size: 20px;">IMAGINATION CONCEIVED!</h2>
-        </div>
-
-        <div class="card" style="padding:0; overflow: hidden;">
-            <div id="overlay" onclick="startExperience()">
-                <div class="play-trigger">CLICK TO START EXPERIENCE</div>
-            </div>
-
-            <model-viewer id="model-viewer" 
-                src="Models/human_kai_40.glb" 
-                ios-src="Models/Human_kai_40.usdz#allowsScaling=1"
-                ar ar-modes="webxr scene-viewer quick-look" 
-                ar-placement="floor" camera-controls 
-                autoplay animation-name="*"
-                interaction-prompt="none" loading="eager">
-                
-                <button slot="ar-button" class="ar-button" id="ar-launcher">
-                    👆 <strong style="color:white;">AUGMENTED REALITY!</strong>
-                </button>
-            </model-viewer>
-        </div>
-
-        <div class="card" style="text-align: center;">
-            <h1 style="color:#FFFFFF;">EXPERIENTIAL</h1>
-            <audio controls id="sound" style="width: 100%;">
-                <source id="audio-source" src="Sound/Kai Story human_v2.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-
-        <div class="card" style="text-align: center; color:#ffdf00;">
-            <h1 style="color:#FFFFFF;"><em>Answers to Critical Questions:</em></h1>
-            <p>
-                <b>DISCOVER:</b> <a href="#" onclick="getOutboundLink('https://vimeo.com/899988851/5cb3fc9712');">STORY & BRAND AWARENESS</a><br>
-                <b>ENGAGE:</b> <a href="#" onclick="getOutboundLink('https://avertek.net/ar-examples');">UNIQUE SELLING PROPOSTIONS</a><br>
-                <b>EXPLORE:</b> <a href="#" onclick="getOutboundLink('https://avertek.net/');">FEATURES, ADVANTAGES, BENEFITS</a><br>
-                <b>REALIZE:</b> <a href="#" onclick="getOutboundLink('https://avertek.net/xr-now');">VALUE</a><br>
-                <b>CONTINUE:</b> <a href="#" onclick="getOutboundLink('https://avertek.net/contact-us');">THE STORY</a>
-            </p>
+            <img class="marginauto" src="images/AVERtek-Logo-final-white.png" alt="Logo" style="width: 300px; height: auto">
+            <h1 style="text-align: center; color:#FFFFFF; font-family:arial;">BRAND. STORYTELLING. REALITY.</h1>
+            <h2 style="text-align: center; color:#017CB3; font-family:arial;">IMAGINATION CONCEIVED!</h2>
         </div>
 
         <div class="card">
-            <img alt="AR Instructions" src="images/AR Instructions wht-trans3.png" class="marginauto" style="max-width: 100%; max-height: 350px">
+            <model-viewer 
+                id="model-viewer" 
+                src="Models/human_kai_40.glb?sound=Sound/Kai Story human_v2.mp3" 
+                ios-src="Models/Human_kai_40.usdz"
+                ar 
+                ar-modes="webxr scene-viewer quick-look" 
+                ar-placement="floor"
+                ar-scale="auto"
+                camera-controls 
+                autoplay 
+                shadow-intensity="1"
+                loading="eager" 
+                alt="Kai Demo Model">
+                
+                <button slot="ar-button" class="ar-button">
+                    👆 <strong>AUGMENTED REALITY!</strong>
+                </button>
+            </model-viewer>
+
+            <div class="card1">
+                <section class="attribution">
+                    <h1 style="text-align: center; color:#FFFFFF; font-family:arial;">EXPERIENTIAL</h1>
+                    <p align="center">
+                        <audio controls autoplay loop id="sound">
+                            <source src="Sound/Kai Story human_v2.mp3" type="audio/mpeg" />
+                        </audio>
+                    </p>
+                </section>
+            </div>
         </div>
+
+        <div class="card">
+            <h2 style="text-align: center; color:#FFFFFF; font-family:arial;"><em>4D Augmented Reality is...</em></h2>
+            <h1 style="text-align: center; color:#ffdf00; font-family:arial;">THEATER BEYOND THE MIND</h1>
+        </div>
+
+        <div class="card">
+            <h2 style="text-align: center; font-family:arial;">
+                <span style="color:#ffdf00;">DISCOVER:</span> 
+                <a href="#" onclick="getOutboundLink('https://vimeo.com/899988851/5cb3fc9712');">STORY & BRAND AWARENESS</a>
+            </h2>
+            </div>
     </div>
 
     <script>
-        const modelViewer = document.querySelector("#model-viewer");
-        const audio = document.querySelector("#sound");
-        const audioSource = document.querySelector("#audio-source");
-        const overlay = document.querySelector("#overlay");
-        const arLauncher = document.querySelector("#ar-launcher");
+        function Sync(selector, audioSelector) {
+            var modelViewer = document.querySelector(selector);
+            var sound = document.querySelector(audioSelector);
 
-        const webAudio = "Sound/Kai Story human_v2.mp3"; 
-        const arAudio = "Sound/K18 Edit 57sec_3.mp3";   
+            sound.addEventListener("timeupdate", () => {
+                modelViewer.currentTime = sound.currentTime;
+            });
 
-        function startExperience() {
-            overlay.classList.add("hide");
-            audio.play();
-            modelViewer.play();
+            sound.addEventListener("pause", () => { modelViewer.pause(); });
+            sound.addEventListener("play", () => { modelViewer.play(); });
+
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState !== "visible") { sound.pause(); }
+            });
         }
 
-        // --- FIXED AR LAUNCH WITH DESKTOP WARNING ---
-        arLauncher.addEventListener('click', (e) => {
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            
-            if (!isMobile) {
-                alert("Please open this page on a mobile device to experience Kai in Augmented Reality!");
-                return;
-            }
-
-            audio.pause();
-            audioSource.src = arAudio;
-            audio.load();
-
-            // Prime audio for AR
-            audio.play().then(() => {
-                audio.pause();
-                audio.currentTime = 0;
-            }).catch(e => console.log("Prime blocked"));
-
-            modelViewer.src = "Models/Hkai_final.glb"; 
-            // Note: activateAR is called automatically by the slot="ar-button" 
-            // but we ensure the source is swapped first.
+        window.addEventListener("load", () => {
+            Sync("#model-viewer", "#sound");
         });
-
-        // --- AR STATUS HANDLER ---
-        modelViewer.addEventListener('ar-status', (event) => {
-            if (event.detail.status === 'object-placed') {
-                audio.play();
-                modelViewer.play();
-            }
-
-            if (event.detail.status === 'not-presenting') {
-                audio.pause();
-                audioSource.src = webAudio;
-                audio.load();
-                
-                if(!overlay.classList.contains("hide")) return;
-                
-                setTimeout(() => {
-                    audio.play();
-                    modelViewer.play();
-                }, 800);
-            }
-        });
-
-        // --- ENHANCED SYNC LOGIC ---
-        // Ensures Kai's animation frame matches the audio timestamp
-        audio.addEventListener("timeupdate", () => {
-            if (!isNaN(audio.currentTime) && modelViewer.playing) {
-                modelViewer.currentTime = audio.currentTime;
-            }
-        });
-
-        audio.addEventListener("play", () => modelViewer.play());
-        audio.addEventListener("pause", () => modelViewer.pause());
 
         var getOutboundLink = function(url) {
             gtag('event', 'click', {
                 'event_category': 'outbound',
                 'event_label': url,
                 'transport_type': 'beacon',
-                'event_callback': function(){ window.open(url, '_blank'); }
+                'event_callback': function(){ document.location = url; }
             });
+            return false;
         }
     </script>
 </body>
