@@ -80,11 +80,6 @@
             </audio>
         </div>
 
-        <div class="card">
-            <h2 style="text-align: center; color:#FFFFFF;"><em>4D Augmented Reality is...</em></h2> 
-            <h1 style="text-align: center; color:#ffdf00;">THEATER BEYOND THE MIND</h1> 
-        </div>
-
         <div class="card" style="text-align: center; color:#ffdf00; line-height: 1.8;">
             <h1 style="color:#FFFFFF;"><em>Answers to Critical Questions:</em></h1>
             <p>
@@ -98,7 +93,6 @@
 
         <div class="card">
             <img alt="AR Instructions" src="images/AR Instructions wht-trans3.png" class="marginauto" style="max-width: 100%; max-height: 350px">
-            <h4 style="text-align: center; color:#FFFFFF;"><em>if AR button does not appear on mobile device, use another browser</em></h4>
         </div>
     </div>
 
@@ -118,42 +112,51 @@
             modelViewer.play();
         }
 
-        // --- AR LAUNCH LOGIC WITH NON-MOBILE WARNING ---
+        // --- AR LAUNCHER WITH READY-CHECK TO PREVENT BLACK SCREEN ---
         arLauncher.addEventListener('click', (e) => {
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             
             if (!isMobile) {
-                // Feature Fixed: Alert user on desktop
-                alert("The Augmented Reality experience requires a mobile device. Please visit this page on your phone to launch Kai into your room!");
+                alert("The Augmented Reality experience requires a mobile device. Please visit this page on your phone!");
                 return;
             }
 
-            // Prep for AR
+            // Prepare Audio for AR
             audio.pause();
             audioSource.src = arAudio;
             audio.load();
 
-            // Prime audio
+            // Prime audio to bypass auto-play blocks
             audio.play().then(() => {
                 audio.pause();
                 audio.currentTime = 0;
             }).catch(e => console.log("Audio prime blocked"));
 
-            // IMPORTANT: Swap model and ensure it's in a 'playing' state for AR handoff
+            // Change Source to High Quality AR Model
             modelViewer.src = "Models/Hkai_final.glb"; 
             modelViewer.autoplay = true;
 
-            // Small delay to ensure the new model source is registered before launch
-            setTimeout(() => {
+            // THE FIX: Wait for model to be fully ready before launching AR
+            const launchARWhenReady = () => {
                 modelViewer.activateAR();
-            }, 50);
+                modelViewer.removeEventListener('poster-dismissed', launchARWhenReady);
+            };
+
+            modelViewer.addEventListener('poster-dismissed', launchARWhenReady);
+
+            // Fallback for slower connections (max 2.5 seconds)
+            setTimeout(() => {
+                if (modelViewer.src.includes("Hkai_final.glb")) {
+                    modelViewer.activateAR();
+                }
+            }, 2500);
         });
 
         // --- AR STATUS HANDLER ---
         modelViewer.addEventListener('ar-status', (event) => {
             if (event.detail.status === 'object-placed') {
                 audio.play();
-                modelViewer.play(); // Ensures Kai starts dancing when placed
+                modelViewer.play(); // Force movement once placed
             }
 
             if (event.detail.status === 'not-presenting') {
@@ -170,9 +173,8 @@
             }
         });
 
-        // --- SYNC & CONTROL LOGIC ---
+        // --- SYNC & CONTROL ---
         audio.addEventListener("timeupdate", () => {
-            // Only sync if the model is currently active/playing
             if (!isNaN(audio.currentTime) && !modelViewer.paused) {
                 modelViewer.currentTime = audio.currentTime;
             }
